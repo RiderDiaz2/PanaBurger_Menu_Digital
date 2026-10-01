@@ -227,7 +227,7 @@ const MENU_ITEMS = [
     price: 4.75,
     description: "Helado de fresa con remolino y trozos de galleta graham en un barquillo crocante.",
     ingredients: ["Helado de fresa", "Galleta graham", "Barquillo crocante"],
-    image: "images/banana-split-heladeria.jpg",
+    image: "images/Banana-split-heladeria.jpg",
     rating: 4.8,
     popular: false,
     available: true,
