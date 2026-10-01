@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Menú digital de Flame & Scoop: hamburguesas, perros calientes, almuerzos y helados." />
+  <meta name="theme-color" content="#0F0F12" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Flame & Scoop" />
+  <title>  PanaBurger | Menú Digital</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="/panaburgerlogocolor.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/panaburger.png" />
+  <style>
+    /* Pantalla de bienvenida PanaBurger — alineada con el estilo del menú digital */
+    .splash-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 34%, rgba(255, 94, 43, .14), transparent 30%),
+        linear-gradient(180deg, #21110e 0%, #160c0b 52%, #10090a 100%);
+      opacity: 1;
+      visibility: visible;
+      transition: opacity .55s ease, visibility .55s ease;
+    }
+
+    /* Brillo cálido detrás del logo, como los acentos naranjas del menú */
+    .splash-screen::before {
+      content: "";
+      position: absolute;
+      width: min(82vw, 430px);
+      height: min(82vw, 430px);
+      border-radius: 50%;
+      background: rgba(255, 94, 43, .12);
+      filter: blur(72px);
+      animation: necoGlow 2.4s ease-in-out infinite;
+    }
+
+    .splash-screen::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -180px;
+      width: 520px;
+      height: 300px;
+      transform: translateX(-50%);
+      background: radial-gradient(ellipse, rgba(255,184,0,.08), transparent 68%);
+      pointer-events: none;
+    }
+
+    .splash-screen.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: min(88vw, 360px);
+      padding: 28px 24px 30px;
+      animation: necoSplashIn .8s cubic-bezier(.22,1,.36,1) both;
+    }
+
+    .splash-logo-wrap {
+      display: grid;
+      place-items: center;
+      width: min(58vw, 220px);
+      height: min(58vw, 220px);
+      border-radius: 28%;
+      overflow: hidden;
+      box-shadow:
+        0 24px 55px rgba(0,0,0,.48),
+        0 0 0 1px rgba(255,255,255,.06);
+      animation: necoLogoFloat 2.6s ease-in-out infinite;
+    }
+
+    .splash-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .splash-title {
+      margin: 22px 0 4px;
+      color: #fff;
+      font: 800 clamp(1.75rem, 8vw, 2.35rem)/1.05 -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+      letter-spacing: -.045em;
+      text-shadow: 0 5px 18px rgba(0,0,0,.35);
+    }
+
+    .splash-subtitle {
+      margin: 0;
+      color: rgba(255,255,255,.58);
+      font: 500 .82rem/1.4 -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      letter-spacing: .04em;
+    }
+
+    .splash-loader {
+      width: 92px;
+      height: 4px;
+      margin-top: 24px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255,255,255,.10);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,.25);
+    }
+
+    .splash-loader::before {
+      content: "";
+      display: block;
+      width: 38%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #ff5e2b, #ffb800);
+      animation: necoLoading 1.15s ease-in-out infinite;
+    }
+
+    @keyframes necoSplashIn {
+      from { opacity: 0; transform: translateY(18px) scale(.965); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes necoLogoFloat {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-6px) scale(1.012); }
+    }
+
+    @keyframes necoGlow {
+      0%, 100% { transform: scale(.94); opacity: .62; }
+      50% { transform: scale(1.07); opacity: 1; }
+    }
+
+    @keyframes necoLoading {
+      0% { transform: translateX(-120%); }
+      50% { transform: translateX(180%); }
+      100% { transform: translateX(300%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .splash-content, .splash-logo-wrap, .splash-screen::before, .splash-loader::before { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Pantalla de bienvenida -->
+  <div class="splash-screen" id="splash-screen" aria-label="Cargando PanaBurger">
+    <div class="splash-content">
+      <div class="splash-logo-wrap">
+        <img class="splash-logo" src="/panaburger.png" alt="Menú" width="220" height="220" />
+      </div>
+      <h2 class="splash-title">Menú</h2>
+      <p class="splash-subtitle">Cargando tu menú...</p>
+      <div class="splash-loader" aria-hidden="true"></div>
+    </div>
+  </div>
+  
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const splash = document.getElementById("splash-screen");
+
+    if (!splash) return;
+
+    setTimeout(function () {
+      splash.classList.add("is-hidden");
+    }, 1500);
+  });
+</script>
+  
+  <div class="app">
+
+    <!-- Encabezado -->
+    <header class="app-header">
+      <div class="app-header__brand">
+        <p class="app-header__location" id="restaurant-location">San Mateo, Estado Aragua</p>
+        <h1 class="app-header__name" id="restaurant-name">
+          <span class="text-pana">Pana</span><span class="text-burger">Burger</span></h1>
+        <p class="app-header__meta" id="opening-hours">5:00 PM - 11:00 PM</p>
+      </div>
+    <!-- LOGO CON EFECTO DE LUZ (SOLO EN TABLET Y PC) -->
+      <div class="logo-header-wrapper">
+        <div class="shimmer-container">
+          <img src="/panaburgerlogocolor.png" alt="PanaBurger Logo" class="panaburger-logo" />
+        </div>
+      </div>
+      <div class="app-header__badges">
+        <span class="status-badge" id="status-badge">
+          <span class="status-badge__dot" aria-hidden="true"></span>
+          <span id="status-text">Cerrado</span>
+        </span>
+      </div>
+    </header>
+
+    <!-- Búsqueda + categorías -->
+    <div class="sticky-bar">
+      <div class="segmented" id="category-control" role="tablist" aria-label="Categorías del menú"></div>
+    </div>
+
+    <!-- Cuadrícula de productos -->
+    <main class="menu">
+      <section class="menu-grid" id="menu-grid" aria-live="polite"></section>
+    </main>
+  </div>
+
+  <!-- Overlay compartido -->
+  <div class="sheet-overlay" id="sheet-overlay"></div>
+
+  <!-- Sheet de detalle de producto -->
+  <section class="sheet" id="item-sheet" role="dialog" aria-modal="true" aria-labelledby="item-name" aria-hidden="true">
+    <div class="sheet__grabber" aria-hidden="true"></div>
+
+    <button type="button" class="sheet__close" id="item-sheet-close" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true">
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+      </svg>
+    </button>
+
+    <div class="sheet__body">
+      <div class="sheet__hero" id="item-hero">
+        <span class="sheet__fallback" id="item-fallback" aria-hidden="true">🍽️</span>
+        <img class="sheet__image" id="item-image" alt="" />
+      </div>
+
+      <div class="sheet__header">
+        <div class="sheet__heading">
+          <h2 class="sheet__name" id="item-name"></h2>
+          <div class="sheet__meta">
+            <span class="pill pill--rating" id="item-rating"></span>
+            <span class="pill pill--popular" id="item-popular" hidden>🔥 Popular</span>
+          </div>
+        </div>
+        <span class="sheet__price" id="item-price"></span>
+      </div>
+
+      <p class="sheet__desc" id="item-desc"></p>
+
+      <h3 class="sheet__label">Ingredientes</h3>
+      <ul class="chip-list" id="item-ingredients"></ul>
+    </div>
+  </section>
+
+  <script src="js/menuData.js" defer></script>
+  <script src="js/script.js" defer></script>
+</body>
+</html>
